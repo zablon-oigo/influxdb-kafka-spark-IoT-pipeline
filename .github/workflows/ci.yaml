@@ -1,0 +1,30 @@
+name: Pipeline CI
+
+on:
+  push:
+  pull_request:
+
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Validate Docker Compose
+        run: docker compose config
+
+      - name: Build images
+        run: docker compose build
+
+      - name: Start services
+        run: docker compose up -d
+
+      - name: Check containers
+        run: docker compose ps
+
+      - name: Shutdown
+        run: docker compose down
+        
