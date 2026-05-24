@@ -1,0 +1,106 @@
+## Building a Real-Time IoT Sensor Pipeline using Kafka, Spark Structured Streaming, and InfluxDB with time-window aggregations.
+
+
+This project demonstrates how to build a real-time IoT sensor data pipeline using Apache Kafka, Spark Structured Streaming, and InfluxDB.
+
+The pipeline ingests IoT sensor events, processes streaming data with Spark, performs time-window aggregations, and stores processed metrics in InfluxDB for real-time analytics and SQL-style querying.
+
+
+Configure InfluxDB
+
+Create Organization and Bucket
+
+```sh
+docker exec -it influxdb influx setup \
+  --org my-org \
+  --bucket sensor-bucket \
+  --username admin \
+  --password password \
+  --retention 1w \
+  --force
+```
+
+Verify Bucket Creation
+
+```sh
+docker exec -it influxdb influx bucket list --org my-org
+```
+
+
+Create an InfluxDB Authentication Token
+
+Generate a token with read/write access to the bucket:
+```sh
+docker exec -it influxdb influx auth create \
+  --org my-org \
+  --description "Spark Streaming Token" \
+  --read-bucket <BUCKET_ID>  \
+  --write-bucket <BUCKET_ID> 
+```
+> Replace <BUCKET_ID> with the bucket ID from the previous command.
+
+
+Package the Java application using Maven:
+
+```sh
+maven clean package -DskipTests
+```
+This generates the JAR file:
+
+> target/sensor-1.0-SNAPSHOT.jar
+
+Copy the JAR into the Spark Container
+
+```sh
+docker cp \
+target/sensor-1.0-SNAPSHOT.jar \
+spark-master:/opt/spark/
+```
+
+Access the Spark Container
+
+Inside the Spark container, export your InfluxDB token:
+
+```sh
+docker exec -it spark-master bash
+```
+Configure the InfluxDB Token
+
+```sh
+export INFLUX_TOKEN="YOUR_INFLUXDB_TOKEN"
+```
+> Replace YOUR_INFLUXDB_TOKEN with the token generated from InfluxDB authentication.
+
+
+Submit the Spark Streaming Job
+
+Run the Spark Structured Streaming application:
+
+```sh
+/opt/spark/bin/spark-submit \
+  --master spark://spark-master:7077 \
+  --class sensor.SensorProcessor \
+  --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.1,com.influxdb:influxdb-client-java:8.0.0 \
+  --conf spark.jars.ivy=/tmp/ivy \
+  /opt/spark/sensor-1.0-SNAPSHOT.jar
+```
+Monitor Spark Logs
+
+```sh
+docker logs -f spark-master
+```
+
+Monitor InfluxDB Logs
+
+```sh
+docker logs -f influxdb
+```
+
+View Kafka Topics
+```sh
+docker exec -it kafka kafka-topics \
+  --bootstrap-server localhost:9092 \
+  --list
+```
+
+
