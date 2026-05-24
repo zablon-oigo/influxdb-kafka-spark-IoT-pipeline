@@ -10,7 +10,7 @@ The pipeline ingests IoT sensor events, processes streaming data with Spark, per
 <img width="1017" height="315" alt="iot" src="https://github.com/user-attachments/assets/99246131-debd-4488-91c6-adaf6b9641a3" />
 
 
-Configure InfluxDB
+#### Configure InfluxDB
 
 Create Organization and Bucket
 
@@ -24,14 +24,14 @@ docker exec -it influxdb influx setup \
   --force
 ```
 
-Verify Bucket Creation
+#### Verify Bucket Creation
 
 ```sh
 docker exec -it influxdb influx bucket list --org my-org
 ```
 
 
-Create an InfluxDB Authentication Token
+#### Create an InfluxDB Authentication Token
 
 Generate a token with read/write access to the bucket:
 ```sh
@@ -44,7 +44,7 @@ docker exec -it influxdb influx auth create \
 > Replace <BUCKET_ID> with the bucket ID from the previous command.
 
 
-Package the Java application using Maven:
+#### Package the Java application using Maven:
 
 ```sh
 maven clean package -DskipTests
@@ -53,7 +53,7 @@ This generates the JAR file:
 
 > target/sensor-1.0-SNAPSHOT.jar
 
-Copy the JAR into the Spark Container
+#### Copy the JAR into the Spark Container
 
 ```sh
 docker cp \
@@ -61,14 +61,14 @@ target/sensor-1.0-SNAPSHOT.jar \
 spark-master:/opt/spark/
 ```
 
-Access the Spark Container
+#### Access the Spark Container
 
 Inside the Spark container, export your InfluxDB token:
 
 ```sh
 docker exec -it spark-master bash
 ```
-Configure the InfluxDB Token
+#### Configure the InfluxDB Token
 
 ```sh
 export INFLUX_TOKEN="YOUR_INFLUXDB_TOKEN"
@@ -76,7 +76,7 @@ export INFLUX_TOKEN="YOUR_INFLUXDB_TOKEN"
 > Replace YOUR_INFLUXDB_TOKEN with the token generated from InfluxDB authentication.
 
 
-Submit the Spark Streaming Job
+#### Submit the Spark Streaming Job
 
 Run the Spark Structured Streaming application:
 
@@ -88,19 +88,19 @@ Run the Spark Structured Streaming application:
   --conf spark.jars.ivy=/tmp/ivy \
   /opt/spark/sensor-1.0-SNAPSHOT.jar
 ```
-Monitor Spark Logs
+#### Monitor Spark Logs
 
 ```sh
 docker logs -f spark-master
 ```
 
-Monitor InfluxDB Logs
+#### Monitor InfluxDB Logs
 
 ```sh
 docker logs -f influxdb
 ```
 
-View Kafka Topics
+#### View Kafka Topics
 ```sh
 docker exec -it kafka kafka-topics \
   --bootstrap-server localhost:9092 \
