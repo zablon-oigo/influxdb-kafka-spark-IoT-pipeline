@@ -1,6 +1,18 @@
 ## Building a Real-Time IoT Sensor Pipeline using Kafka, Spark Structured Streaming, and InfluxDB with time-window aggregations.
 
 
+![workflow](https://github.com/zablon-oigo/influxdb-kafka-spark-IoT-pipeline/actions/workflows/ci.yaml/badge.svg)
+![Java](https://img.shields.io/badge/Java-17+-ED8B00?logo=openjdk&logoColor=white)
+![Maven](https://img.shields.io/badge/Maven-3.8+-C71A36?logo=apachemaven&logoColor=white)
+![Apache Kafka](https://img.shields.io/badge/Apache%20Kafka-3.7-231F20?logo=apachekafka&logoColor=white)
+![Apache Spark](https://img.shields.io/badge/Apache%20Spark-3.5+-E25A1C?logo=apachespark&logoColor=white)
+![InfluxDB](https://img.shields.io/badge/InfluxDB-2.x-22ADF6?logo=influxdb&logoColor=white)
+![Docker](https://img.shields.io/badge/Docker-Latest-2496ED?logo=docker&logoColor=white)
+![IoT Sensors](https://img.shields.io/badge/IoT-Sensor%20Streaming-4CAF50?logo=iota&logoColor=white)
+![Structured Streaming](https://img.shields.io/badge/Spark-Structured%20Streaming-F88909?logo=apache-spark&logoColor=white)
+![Time Series](https://img.shields.io/badge/Analytics-Time--Series-blue)
+
+
 This project demonstrates how to build a real-time IoT sensor data pipeline using Apache Kafka, Spark Structured Streaming, and InfluxDB.
 
 The pipeline ingests IoT sensor events, processes streaming data with Spark, performs time-window aggregations, and stores processed metrics in InfluxDB for real-time analytics and SQL-style querying.
