@@ -6,6 +6,10 @@ This project demonstrates how to build a real-time IoT sensor data pipeline usin
 The pipeline ingests IoT sensor events, processes streaming data with Spark, performs time-window aggregations, and stores processed metrics in InfluxDB for real-time analytics and SQL-style querying.
 
 
+#### Architecture Diagram
+<img width="1017" height="315" alt="iot" src="https://github.com/user-attachments/assets/99246131-debd-4488-91c6-adaf6b9641a3" />
+
+
 Configure InfluxDB
 
 Create Organization and Bucket
